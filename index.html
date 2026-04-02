@@ -10,7 +10,7 @@
   body{background:#07090f;color:#e2e8f0;font-family:'Noto Sans KR',sans-serif;min-height:100vh}
   #app{max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:80px;}
 
-  /* ── 헤더 (유튜브 버튼 및 문구 위치 조정) ── */
+  /* ── 헤더 (유튜브 버튼 위치 조정) ── */
   .header{background:linear-gradient(180deg,#0d1220 0%,#07090f 100%);
     border-bottom:1px solid rgba(139,92,246,.2);padding:18px 18px 0;
     position:sticky;top:0;z-index:20}
@@ -18,17 +18,7 @@
   .app-title{font-size:20px;font-weight:900;letter-spacing:-1px;
     background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
   
-  /* ── 유튜브 이동 버튼 및 문구 스타일 (디자인 반영) ── */
-  .youtube-container {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* 문구와 아이콘 사이 간격 */
-  }
-  .youtube-text {
-    font-size: 12px;
-    color: #94a3b8; /* 기존 보조 문구 색상 */
-    font-weight: 500;
-  }
+  /* ── 유튜브 이동 버튼 스타일 (이미지 디자인 반영) ── */
   .youtube-link {
     display: flex;
     align-items: center;
@@ -51,4 +41,57 @@
   }
 
   /* ── 이하 기존 스타일 전체 유지 ── */
-  .tabs{
+  .tabs{display:flex;border-bottom:1px solid rgba(226,232,240,.06)}
+  .tab-item{flex:1;text-align:center;padding:12px 0;font-size:14px;color:#94a3b8;cursor:pointer;position:relative}
+  .tab-item.active{color:#a78bfa;font-weight:700}
+  .tab-item.active::after{content:'';position:absolute;bottom:-1px;left:20%;right:20%;height:2px;background:#a78bfa;border-radius:2px}
+
+  .content-section{display:none;padding:18px}
+  .content-section.active{display:block}
+
+  .panel{background:#0d1220;border-radius:12px;border:1px solid rgba(226,232,240,.06);padding:18px;margin-bottom:18px}
+  .panel-title{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;color:#f1f5f9}
+  
+  .alg-btn-group{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .alg-btn{background:#111827;border:1px solid rgba(226,232,240,.06);color:#94a3b8;padding:14px;border-radius:8px;font-size:13px;cursor:pointer;text-align:left;transition:all .2s;display:flex;flex-direction:column}
+  .alg-btn:hover{border-color:rgba(167,139,250,.4);background:#161d2f}
+  .alg-btn.active{border-color:#a78bfa;background:#1e1b4b;color:#a78bfa}
+  .alg-btn-title{font-weight:700;margin-bottom:4px;font-size:14px}
+  
+  .opt-label{display:flex;align-items:center;justify-content:space-between;padding:12px 0;font-size:13px;color:#94a3b8;border-bottom:1px solid rgba(226,232,240,.06)}
+  .toggle-sw{position:relative;display:inline-block;width:38px;height:20px}
+  .toggle-sw input{opacity:0;width:0;height:0}
+  .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#1f2937;border-radius:20px;transition:.3s}
+  .toggle-slider:before{position:absolute;content:"";height:16px;width:16px;left:2px;bottom:2px;background-color:#94a3b8;border-radius:50%;transition:.3s}
+  input:checked + .toggle-slider{background-color:#7c3aed}
+  input:checked + .toggle-slider:before{transform:translateX(18px);background-color:#fff}
+  
+  .action-btn{width:100%;padding:16px;background:linear-gradient(135deg,#8b5cf6 0%,#6d28d9 100%);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:10px;box-shadow:0 4px 12px rgba(109,40,217,.3)}
+  .action-btn:hover{opacity:.9;transform:translateY(-1px)}
+  .action-btn:active{transform:translateY(1px)}
+
+  .number-list{list-style:none;margin-top:18px}
+  .number-set{background:#0d1220;border-radius:10px;padding:14px;margin-bottom:12px;border:1px solid rgba(226,232,240,.06);position:relative}
+  .set-header{font-size:12px;color:#64748b;margin-bottom:10px;display:flex;justify-content:space-between}
+  .ball-container{display:flex;gap:7px}
+  .ball{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3);box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
+  .set-type{background:rgba(167,139,250,.1);color:#a78bfa;padding:2px 6px;border-radius:4px;font-size:11px}
+  .del-btn{position:absolute;top:10px;right:10px;background:none;border:none;color:#475569;cursor:pointer;font-size:16px}
+  .del-btn:hover{color:#ef4444}
+  
+  .loading{text-align:center;padding:30px;color:#64748b;font-size:13px}
+  .empty-msg{text-align:center;padding:40px;color:#64748b;font-size:13px;line-height:1.6}
+  
+  .drw-header{font-size:13px;color:#94a3b8;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+  .drw-no{font-size:18px;font-weight:900;color:#f1f5f9;margin-right:8px}
+  
+  /* Ball Colors (기존 유지) */
+  .b-y{background:#eab308}.b-b{background:#3b82f6}.b-r{background:#ef4444}.b-g{background:#6b7280}.b-p{background:#22c55e}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="header">
+    <div class="header-top">
+      <div>
+        <h1 class="app
