@@ -1,762 +1,560 @@
 <!DOCTYPE html>
-<!-- saved from url=(0065)file:///C:/Users/blogh/Downloads/stoploss_calculator_nosense.html -->
+<!-- saved from url=(0045)file:///C:/Users/blogh/Downloads/index_4.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>손절 심리 계산기 | 노센스</title>
-<link href="./index_files/css2" rel="stylesheet">
-<script src="./index_files/chart.umd.js.다운로드"></script>
+<title>노센스 AI 로또분석기</title>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#07090f;color:#e2e8f0;font-family:'Noto Sans KR',sans-serif;min-height:100vh}
+  #app{max-width:480px;margin:0 auto;min-height:100vh}
 
-:root{
-  --bg:#0c0c10;
-  --s1:#141418;
-  --s2:#1c1c23;
-  --s3:#242430;
-  --border:rgba(255,255,255,0.07);
-  --border2:rgba(255,255,255,0.12);
-  --text:#eeeef0;
-  --muted:#666672;
-  --muted2:#999aaa;
-  --accent:#00e5a0;
-  --accent-dim:rgba(0,229,160,0.1);
-  --accent-border:rgba(0,229,160,0.25);
-  --red:#ff4d6a;
-  --red-dim:rgba(255,77,106,0.1);
-  --red-border:rgba(255,77,106,0.3);
-  --blue:#5b9cf6;
-  --blue-dim:rgba(91,156,246,0.1);
-  --yellow:#ffd166;
-  --yellow-dim:rgba(255,209,102,0.1);
-}
+  /* ── 헤더 ── */
+  .header{background:linear-gradient(180deg,#0d1220 0%,#07090f 100%);
+    border-bottom:1px solid rgba(139,92,246,.2);padding:18px 18px 0;
+    position:sticky;top:0;z-index:20}
+  .header-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+  .app-title{font-size:20px;font-weight:900;letter-spacing:-1px;
+    background:linear-gradient(90deg,#a78bfa,#60a5fa,#34d399);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .header-sub{font-size:11px;color:#475569;margin-top:3px}
+  .header-badge{text-align:right}
+  .badge-warn{font-size:11px;font-weight:700;color:#ef4444}
+  .badge-info{font-size:10px;color:#475569}
 
-body{
-  font-family:'Noto Sans KR',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  padding:2rem 1.25rem 4rem;
-}
+  /* ── 최신회차 배너 ── */
+  .latest-banner{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.18);
+    border-radius:10px 10px 0 0;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .latest-label{font-size:11px;color:#a78bfa;font-weight:700;flex-shrink:0}
 
-.page{max-width:660px;margin:0 auto;}
+  /* ── 탭 ── */
+  .tabs{display:flex;border-top:1px solid rgba(139,92,246,.12)}
+  .tab-btn{flex:1;padding:11px 4px;border:none;cursor:pointer;font-size:11px;font-weight:700;
+    background:transparent;color:#475569;border-bottom:2px solid transparent;transition:all .2s;font-family:inherit}
+  .tab-btn.active{color:#a78bfa;border-bottom:2px solid #a78bfa}
 
-/* ── 채널 헤더 ── */
-.header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:2.5rem;padding-bottom:1.25rem;
-  border-bottom:1px solid var(--border);
-}
-.brand{display:flex;align-items:center;gap:12px;}
-.brand-logo{
-  width:42px;height:42px;border-radius:10px;
-  background:var(--accent);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Space Grotesk',sans-serif;
-  font-size:15px;font-weight:700;color:#0c0c10;
-  letter-spacing:-0.5px;flex-shrink:0;
-}
-.brand-name{font-size:16px;font-weight:700;letter-spacing:-0.3px;}
-.brand-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-.yt-btn{
-  display:flex;align-items:center;gap:6px;
-  background:#ff0000;color:#fff;
-  font-size:11px;font-weight:700;
-  padding:6px 12px;border-radius:6px;
-  text-decoration:none;letter-spacing:0.3px;
-  white-space:nowrap;
-}
-.yt-btn svg{width:13px;height:13px;fill:#fff;}
+  /* ── 콘텐츠 ── */
+  .content{padding:18px 18px 60px}
+  .section-title{font-size:12px;color:#94a3b8;font-weight:700;margin-bottom:10px}
 
-/* ── 탭 ── */
-.tabs{
-  display:flex;gap:6px;margin-bottom:1.75rem;
-  background:var(--s1);border:1px solid var(--border);
-  border-radius:12px;padding:5px;
-}
-.tab{
-  flex:1;padding:9px 8px;border-radius:8px;
-  font-size:12px;font-weight:700;text-align:center;
-  cursor:pointer;color:var(--muted);
-  transition:all 0.2s;border:none;background:transparent;
-  font-family:'Noto Sans KR',sans-serif;
-  letter-spacing:-0.2px;
-}
-.tab.active{background:var(--s3);color:var(--text);border:1px solid var(--border2);}
+  /* ── 볼 ── */
+  .ball{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:900;text-shadow:0 1px 3px rgba(0,0,0,.5);flex-shrink:0;position:relative;cursor:default}
+  .ball.y{background:linear-gradient(145deg,#fbbf24,#d97706);box-shadow:0 2px 12px #f59e0b66,inset 0 2px 5px rgba(255,255,255,.35)}
+  .ball.b{background:linear-gradient(145deg,#60a5fa,#2563eb);box-shadow:0 2px 12px #3b82f666,inset 0 2px 5px rgba(255,255,255,.35)}
+  .ball.r{background:linear-gradient(145deg,#f87171,#dc2626);box-shadow:0 2px 12px #ef444466,inset 0 2px 5px rgba(255,255,255,.35)}
+  .ball.p{background:linear-gradient(145deg,#c084fc,#7c3aed);box-shadow:0 2px 12px #8b5cf666,inset 0 2px 5px rgba(255,255,255,.35)}
+  .ball.g{background:linear-gradient(145deg,#34d399,#059669);box-shadow:0 2px 12px #10b98166,inset 0 2px 5px rgba(255,255,255,.35)}
+  .ball.bonus{background:linear-gradient(145deg,#fb923c,#c2410c);box-shadow:0 2px 12px #ea580c66,inset 0 2px 5px rgba(255,255,255,.35)}
+  .ball.dim{opacity:.3;box-shadow:none}
+  .ball .bonus-dot{position:absolute;top:-3px;right:-3px;width:13px;height:13px;border-radius:50%;
+    background:#fff;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:900;color:#ea580c}
+  .ball-row{display:flex;gap:6px;align-items:center;flex-wrap:nowrap}
+  .ball-row.wrap{flex-wrap:wrap}
 
-/* ── 히어로 ── */
-.hero{margin-bottom:1.75rem;}
-.hero-tag{
-  display:inline-block;
-  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  color:var(--red);background:var(--red-dim);border:1px solid var(--red-border);
-  border-radius:4px;padding:3px 8px;margin-bottom:10px;
-}
-.hero-tag.green{color:var(--accent);background:var(--accent-dim);border-color:var(--accent-border);}
-.hero-title{font-size:28px;font-weight:900;line-height:1.15;letter-spacing:-0.5px;}
-.hero-title em{color:var(--red);font-style:normal;}
-.hero-title em.g{color:var(--accent);}
-.hero-desc{font-size:13px;color:var(--muted2);margin-top:8px;line-height:1.7;}
+  /* ── 알고리즘 ── */
+  .algo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+  .algo-card{padding:11px 12px;border-radius:11px;cursor:pointer;transition:all .2s;
+    border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)}
+  .algo-card.active{border:1px solid rgba(167,139,250,.55);background:rgba(139,92,246,.18);
+    box-shadow:0 0 18px rgba(139,92,246,.25)}
+  .algo-icon{font-size:20px}
+  .algo-name{font-size:12px;font-weight:800;margin-top:4px;color:#e2e8f0}
+  .algo-card.active .algo-name{color:#c4b5fd}
+  .algo-desc{font-size:10px;color:#64748b;margin-top:2px}
 
-/* ── 지표 카드 ── */
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.5rem;}
-.card{
-  background:var(--s1);border:1px solid var(--border);
-  border-radius:12px;padding:14px;
-  transition:border-color 0.3s;
-}
-.card.highlight{border-color:var(--red-border);background:var(--red-dim);}
-.card.highlight-g{border-color:var(--accent-border);background:var(--accent-dim);}
-.card-label{font-size:11px;color:var(--muted);margin-bottom:6px;letter-spacing:0.3px;}
-.card-value{font-size:17px;font-weight:700;line-height:1;}
-.card-value.r{color:var(--red);}
-.card-value.g{color:var(--accent);}
-.card-value.b{color:var(--blue);}
-.card-value.y{color:var(--yellow);}
+  /* ── 게임 수 ── */
+  .count-row{display:flex;gap:8px;margin-bottom:20px}
+  .count-btn{flex:1;padding:10px 0;border-radius:10px;border:none;cursor:pointer;
+    font-weight:800;font-size:14px;transition:all .2s;background:rgba(255,255,255,.05);color:#64748b;font-family:inherit}
+  .count-btn.active{background:linear-gradient(135deg,#8b5cf6,#6366f1);color:#fff;box-shadow:0 4px 15px rgba(139,92,246,.4)}
 
-/* ── 슬라이더 컨트롤 ── */
-.controls{display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem;}
-.ctrl{
-  background:var(--s1);border:1px solid var(--border);
-  border-radius:12px;padding:12px 16px;
-  display:flex;align-items:center;gap:12px;
-}
-.ctrl-label{font-size:12px;color:var(--muted);min-width:80px;line-height:1.4;}
-.ctrl-out{
-  font-size:13px;font-weight:700;min-width:90px;
-  text-align:right;
-  font-family:'Space Grotesk',sans-serif;
-}
-.ctrl-out.r{color:var(--red);}
-.ctrl-out.g{color:var(--accent);}
-input[type=range]{
-  flex:1;-webkit-appearance:none;appearance:none;
-  height:3px;border-radius:3px;
-  background:var(--s3);cursor:pointer;outline:none;
-}
-input[type=range].red::-webkit-slider-thumb{background:var(--red);box-shadow:0 0 0 3px var(--red-dim);}
-input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;width:16px;height:16px;
-  border-radius:50%;background:var(--accent);cursor:pointer;
-  border:2px solid var(--bg);
-  box-shadow:0 0 0 3px var(--accent-dim);
-}
+  /* ── 추출버튼 ── */
+  .gen-btn{width:100%;padding:17px;border-radius:14px;border:none;cursor:pointer;
+    font-weight:900;font-size:16px;letter-spacing:-.5px;transition:all .3s;
+    background:linear-gradient(135deg,#8b5cf6,#6366f1,#3b82f6);color:#fff;
+    box-shadow:0 8px 30px rgba(139,92,246,.5);font-family:inherit}
+  .gen-btn:disabled{background:rgba(139,92,246,.25);box-shadow:none;cursor:not-allowed}
 
-/* ── 차트 ── */
-.chart-section{margin-bottom:1.5rem;}
-.section-label{
-  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--muted);margin-bottom:10px;
-}
-.chart-wrap{position:relative;width:100%;height:260px;}
+  /* ── 결과 카드 ── */
+  .result-cards{margin-top:22px}
+  .result-label{font-size:12px;color:#94a3b8;font-weight:700;margin-bottom:12px}
+  .result-card{margin-bottom:10px;padding:14px 16px;border-radius:14px;
+    background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(59,130,246,.05));
+    border:1px solid rgba(139,92,246,.2);animation:slideUp .4s ease both}
+  .result-sub{font-size:11px;color:#64748b;font-weight:700;margin-bottom:12px}
+  .result-balls{display:flex;gap:6px;justify-content:center;flex-wrap:nowrap}
 
-/* ── 손절가 결과 박스 ── */
-.result-box{
-  background:var(--s1);border:1px solid var(--border);
-  border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;
-}
-.result-box.danger{border-color:var(--red-border);background:rgba(255,77,106,0.05);}
-.result-box.safe{border-color:var(--accent-border);background:rgba(0,229,160,0.05);}
-.result-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:10px 0;border-bottom:1px solid var(--border);
-}
-.result-row:last-child{border-bottom:none;padding-bottom:0;}
-.result-row:first-child{padding-top:0;}
-.result-key{font-size:12px;color:var(--muted2);}
-.result-val{font-size:15px;font-weight:700;font-family:'Space Grotesk',sans-serif;}
-.result-val.r{color:var(--red);}
-.result-val.g{color:var(--accent);}
-.result-val.y{color:var(--yellow);}
+  /* ── 통계 ── */
+  .stat-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+  .stat-bar-wrap{flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:20px;overflow:hidden}
+  .stat-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:7px;font-size:10px;color:#fff;font-weight:700}
+  .heatmap{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;margin-bottom:24px}
+  .heatmap-cell{aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .heatmap-n{font-size:10px;font-weight:900;color:#fff}
+  .heatmap-c{font-size:8px;color:rgba(255,255,255,.65)}
 
-/* ── 심리 고통 바 ── */
-.pain-section{margin-bottom:1.5rem;}
-.pain-label{font-size:12px;color:var(--muted2);margin-bottom:8px;}
-.pain-bar-wrap{
-  background:var(--s2);border-radius:8px;height:36px;
-  position:relative;overflow:hidden;border:1px solid var(--border);
-  margin-bottom:6px;
-}
-.pain-bar-gain{
-  position:absolute;left:0;top:0;height:100%;
-  background:linear-gradient(90deg,rgba(0,229,160,0.8),rgba(0,229,160,0.4));
-  border-radius:8px 0 0 8px;
-  display:flex;align-items:center;justify-content:flex-end;
-  padding-right:10px;
-  transition:width 0.4s cubic-bezier(0.4,0,0.2,1);
-}
-.pain-bar-loss{
-  position:absolute;right:0;top:0;height:100%;
-  background:linear-gradient(90deg,rgba(255,77,106,0.4),rgba(255,77,106,0.9));
-  border-radius:0 8px 8px 0;
-  display:flex;align-items:center;
-  padding-left:10px;
-  transition:width 0.4s cubic-bezier(0.4,0,0.2,1);
-}
-.bar-text{font-size:11px;font-weight:700;color:#fff;}
-.pain-stat{
-  display:flex;justify-content:space-between;
-  font-size:11px;color:var(--muted);
-}
+  /* ── 최근당첨 ── */
+  .draw-card{margin-bottom:10px;padding:12px 14px;border-radius:12px;
+    background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);
+    border-left:3px solid rgba(255,255,255,.1)}
+  .draw-card.latest{border-left:3px solid #a78bfa}
+  .draw-meta{display:flex;justify-content:space-between;margin-bottom:9px}
+  .draw-no{font-size:12px;font-weight:800;color:#94a3b8}
+  .draw-no.latest{color:#a78bfa}
+  .draw-date{font-size:11px;color:#475569}
 
-/* ── 복구 테이블 ── */
-.recovery-table{
-  width:100%;border-collapse:collapse;margin-bottom:1.5rem;
-  background:var(--s1);border-radius:12px;overflow:hidden;
-  border:1px solid var(--border);
-}
-.recovery-table th{
-  font-size:11px;font-weight:700;color:var(--muted);
-  padding:10px 14px;text-align:left;letter-spacing:0.5px;
-  background:var(--s2);border-bottom:1px solid var(--border);
-}
-.recovery-table td{
-  font-size:13px;padding:10px 14px;
-  border-bottom:1px solid var(--border);
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:500;
-}
-.recovery-table tr:last-child td{border-bottom:none;}
-.recovery-table tr.current{background:rgba(255,77,106,0.08);}
-.recovery-table tr.current td{color:var(--red);}
-.loss-col{color:var(--red);}
-.need-col{color:var(--yellow);}
-.time-col{color:var(--blue);}
+  /* ── 내기록 ── */
+  .rec-card{margin-bottom:10px;padding:12px 14px;border-radius:12px;
+    background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);
+    border-left:3px solid #8b5cf6;animation:slideUp .3s ease both}
+  .rec-meta{display:flex;justify-content:space-between;margin-bottom:9px}
+  .rec-algo{font-size:11px;color:#a78bfa;font-weight:700}
+  .rec-time{font-size:10px;color:#475569}
+  .empty-state{text-align:center;padding:50px 0;color:#475569}
+  .empty-icon{font-size:44px;margin-bottom:14px}
+  .empty-title{font-weight:700;font-size:15px}
+  .empty-sub{font-size:12px;margin-top:6px}
 
-/* ── 인사이트 ── */
-.insight{
-  border-radius:12px;padding:14px 16px;
-  font-size:13px;line-height:1.7;
-  margin-bottom:1.5rem;
-}
-.insight.red{
-  background:var(--red-dim);border:1px solid var(--red-border);
-  color:rgba(255,200,200,0.85);
-}
-.insight.green{
-  background:var(--accent-dim);border:1px solid var(--accent-border);
-  color:rgba(200,255,235,0.85);
-}
-.insight b.r{color:var(--red);}
-.insight b.g{color:var(--accent);}
-.insight b.y{color:var(--yellow);}
+  .clear-btn{font-size:11px;color:#ef4444;background:rgba(239,68,68,.1);
+    border:1px solid rgba(239,68,68,.2);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit}
+  .records-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 
-/* ── 패널 ── */
-.panel{display:none;}
-.panel.active{display:block;}
+  .spin{animation:spin .7s linear infinite;display:inline-block}
 
-/* ── 섹션 구분선 ── */
-.divider{
-  height:1px;background:var(--border);
-  margin:1.25rem 0;
-}
-
-/* ── 푸터 ── */
-.footer{
-  text-align:center;margin-top:2.5rem;padding-top:1.5rem;
-  border-top:1px solid var(--border);
-  font-size:11px;color:var(--muted);
-}
-.footer b{color:var(--accent);}
-
-/* ── 애니메이션 ── */
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.panel.active{animation:fadeIn 0.25s ease;}
-
-@keyframes pulse-red{
-  0%,100%{box-shadow:0 0 0 0 rgba(255,77,106,0);}
-  50%{box-shadow:0 0 0 6px rgba(255,77,106,0.15);}
-}
-.card.highlight{animation:pulse-red 2s infinite;}
-
-@media(max-width:480px){
-  .cards{grid-template-columns:1fr 1fr;}
-  .cards .card:last-child{grid-column:span 2;}
-  .hero-title{font-size:22px;}
-}
+  @keyframes popIn{from{transform:scale(0) rotate(-180deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
 </style>
 </head>
 <body>
-<div class="page">
+<div id="app">
 
-  <!-- 채널 헤더 -->
-  <header class="header">
-    <div class="brand">
-      <div class="brand-logo">NS</div>
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="header-top">
       <div>
-        <div class="brand-name">노센스</div>
-        <div class="brand-sub">경제·투자 인사이트</div>
+        <div class="app-title">🎰 노센스 AI 로또분석기</div>
+        <div class="header-sub" id="dataInfo">실제 동행복권 데이터 41회 (1177~1217회) 기반</div>
+      </div>
+      <div class="header-badge">
+        <div class="badge-warn">당첨 보장 없음</div>
+        <div class="badge-info">재미 목적</div>
       </div>
     </div>
-    <a class="yt-btn" href="https://www.youtube.com/@KnowSense_KR" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0c0c10"></polygon></svg>
-      구독하기
-    </a>
-  </header>
-
-  <!-- 탭 -->
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab(0)">📉 손절가 계산기</button>
-    <button class="tab" onclick="switchTab(1)">🔁 손실 복구 계산기</button>
-    <button class="tab" onclick="switchTab(2)">🧠 손실 고통 시각화</button>
+    <div class="latest-banner" id="latestBanner"><span class="latest-label">🏆 1217회 (2026-03-28)</span>
+    <div class="ball-row"><div class="ball y" style="width:30px;height:30px;font-size:10px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) 0s both">8</div><div class="ball y" style="width:30px;height:30px;font-size:10px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) 0s both">10</div><div class="ball b" style="width:30px;height:30px;font-size:10px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) 0s both">15</div><div class="ball b" style="width:30px;height:30px;font-size:10px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) 0s both">20</div><div class="ball r" style="width:30px;height:30px;font-size:10px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) 0s both">29</div><div class="ball p" style="width:30px;height:30px;font-size:10px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) 0s both">31</div><span style="font-size:11px;color:#475569">+</span><div class="ball bonus" style="width:30px;height:30px;font-size:10px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) 0s both">41<div class="bonus-dot">B</div></div></div></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(&#39;generate&#39;,this)">🎯 번호추출</button>
+      <button class="tab-btn" onclick="switchTab(&#39;stats&#39;,this)">📊 통계분석</button>
+      <button class="tab-btn" onclick="switchTab(&#39;recent&#39;,this)">📅 최근당첨</button>
+      <button class="tab-btn" onclick="switchTab(&#39;records&#39;,this)">📋 내기록</button>
+    </div>
   </div>
 
-  <!-- ════════════════════════════════════
-       패널 1: 손절가 계산기
-  ════════════════════════════════════ -->
-  <div class="panel active" id="panel-0">
+  <!-- 콘텐츠 -->
+  <div class="content">
 
-    <div class="hero">
-      <div class="hero-tag">손절 라인 설정기</div>
-      <h1 class="hero-title">지금 매수하기 전<br><em>손절가를 먼저</em> 정해라</h1>
-      <p class="hero-desc">매수 전 냉정한 상태에서 손절 가격을 미리 계산하세요. Shefrin &amp; Statman(1985)은 사전 규칙 설정이 처분 효과를 줄이는 가장 효과적인 방법이라 했습니다.</p>
+    <!-- ══ 번호 추출 ══ -->
+    <div id="tab-generate">
+      <div class="section-title">🤖 알고리즘 선택</div>
+      <div class="algo-grid" id="algoGrid">
+    <div class="algo-card active" id="algo-combo" onclick="selectAlgo(&#39;combo&#39;)">
+      <div class="algo-icon">🤖</div>
+      <div class="algo-name">AI 복합분석</div>
+      <div class="algo-desc">빈도+구간+홀짝 종합</div>
+    </div>
+    <div class="algo-card " id="algo-freq" onclick="selectAlgo(&#39;freq&#39;)">
+      <div class="algo-icon">🔥</div>
+      <div class="algo-name">빈도수 우선</div>
+      <div class="algo-desc">자주 나온 번호</div>
+    </div>
+    <div class="algo-card " id="algo-cold" onclick="selectAlgo(&#39;cold&#39;)">
+      <div class="algo-icon">❄️</div>
+      <div class="algo-name">미출현 우선</div>
+      <div class="algo-desc">오래 안 나온 번호</div>
+    </div>
+    <div class="algo-card " id="algo-balance" onclick="selectAlgo(&#39;balance&#39;)">
+      <div class="algo-icon">⚖️</div>
+      <div class="algo-name">홀짝 균형</div>
+      <div class="algo-desc">홀3 + 짝3</div>
+    </div>
+    <div class="algo-card " id="algo-zone" onclick="selectAlgo(&#39;zone&#39;)">
+      <div class="algo-icon">🎯</div>
+      <div class="algo-name">구간 분산</div>
+      <div class="algo-desc">전 구간 고른 분포</div>
+    </div>
+    <div class="algo-card " id="algo-random" onclick="selectAlgo(&#39;random&#39;)">
+      <div class="algo-icon">🎲</div>
+      <div class="algo-name">순수 랜덤</div>
+      <div class="algo-desc">완전 무작위</div>
+    </div></div>
+
+      <div class="section-title">🎮 게임 수</div>
+      <div class="count-row" id="countRow">
+    <button class="count-btn active" id="cnt-1" onclick="selectCount(1)">1</button>
+    <button class="count-btn " id="cnt-2" onclick="selectCount(2)">2</button>
+    <button class="count-btn " id="cnt-3" onclick="selectCount(3)">3</button>
+    <button class="count-btn " id="cnt-5" onclick="selectCount(5)">5</button>
+    <button class="count-btn " id="cnt-10" onclick="selectCount(10)">10</button></div>
+
+      <button class="gen-btn" id="genBtn" onclick="handleGenerate()">🎰 번호 추출하기 (1게임)</button>
+      <div id="results"></div>
     </div>
 
-    <!-- 지표 카드 -->
-    <div class="cards">
-      <div class="card">
-        <div class="card-label">매수가</div>
-        <div class="card-value" id="c1-buy">₩50,000</div>
-      </div>
-      <div class="card highlight" id="c1-stop-card">
-        <div class="card-label">⚠ 손절가</div>
-        <div class="card-value r" id="c1-stop">₩46,000</div>
-      </div>
-      <div class="card">
-        <div class="card-label">예상 손실금액</div>
-        <div class="card-value r" id="c1-loss">-₩400,000</div>
-      </div>
-    </div>
+    <!-- ══ 통계 분석 ══ -->
+    <div id="tab-stats" style="display:none"></div>
 
-    <!-- 슬라이더 -->
-    <div class="controls">
-      <div class="ctrl">
-        <span class="ctrl-label">매수 단가</span>
-        <input type="range" min="1000" max="500000" step="1000" value="50000" id="r1-buy" oninput="calcStop()">
-        <span class="ctrl-out g" id="o1-buy">₩50,000</span>
+    <!-- ══ 최근 당첨 ══ -->
+    <div id="tab-recent" style="display:none"></div>
+
+    <!-- ══ 내 기록 ══ -->
+    <div id="tab-records" style="display:none">
+      <div class="records-header">
+        <div class="section-title" style="margin-bottom:0" id="recTitle">📋 내 추출 기록 (0건)</div>
+        <button class="clear-btn" onclick="clearRecords()">전체삭제</button>
       </div>
-      <div class="ctrl">
-        <span class="ctrl-label">보유 수량</span>
-        <input type="range" min="1" max="1000" step="1" value="100" id="r1-qty" oninput="calcStop()">
-        <span class="ctrl-out g" id="o1-qty">100주</span>
-      </div>
-      <div class="ctrl">
-        <span class="ctrl-label">손절 기준</span>
-        <input type="range" class="red" min="1" max="30" step="0.5" value="8" id="r1-pct" oninput="calcStop()">
-        <span class="ctrl-out r" id="o1-pct">-8.0%</span>
-      </div>
-    </div>
-
-    <!-- 결과 상세 -->
-    <div class="result-box danger">
-      <div class="result-row">
-        <span class="result-key">총 매수금액</span>
-        <span class="result-val g" id="r1-total">₩5,000,000</span>
-      </div>
-      <div class="result-row">
-        <span class="result-key">손절가 (1주당)</span>
-        <span class="result-val r" id="r1-stopprice">₩46,000</span>
-      </div>
-      <div class="result-row">
-        <span class="result-key">손절 시 손실금액</span>
-        <span class="result-val r" id="r1-lossamount">-₩400,000</span>
-      </div>
-      <div class="result-row">
-        <span class="result-key">손절 후 남는 금액</span>
-        <span class="result-val y" id="r1-remain">₩4,600,000</span>
-      </div>
-    </div>
-
-    <div class="insight red" id="insight-stop">지금 <b class="r">-8.0%</b> 손절하면 <b class="y">₩400,000</b>의 손실로 끝납니다. 하지만 그냥 들고 버텨 <b class="r">-16%</b>가 되면 원금 복구에 <b class="r">+19.0%</b>가 필요합니다. 빠른 손절이 자본을 지킵니다.</div>
-
-  </div><!-- /panel-0 -->
-
-
-  <!-- ════════════════════════════════════
-       패널 2: 손실 복구 계산기
-  ════════════════════════════════════ -->
-  <div class="panel" id="panel-1">
-
-    <div class="hero">
-      <div class="hero-tag">복구 수익률 계산기</div>
-      <h1 class="hero-title">-50% 손실은<br><em>+100%가</em> 있어야 복구된다</h1>
-      <p class="hero-desc">손실이 클수록 복구에 필요한 수익률은 기하급수적으로 커집니다. 빠른 손절이 얼마나 유리한지 직접 확인하세요.</p>
-    </div>
-
-    <!-- 지표 카드 -->
-    <div class="cards">
-      <div class="card">
-        <div class="card-label">원금</div>
-        <div class="card-value g" id="c2-principal">₩10,000,000</div>
-      </div>
-      <div class="card highlight">
-        <div class="card-label">손실 후 잔액</div>
-        <div class="card-value r" id="c2-after">₩8,000,000</div>
-      </div>
-      <div class="card">
-        <div class="card-label">필요 복구 수익률</div>
-        <div class="card-value y" id="c2-need">+25.0%</div>
-      </div>
-    </div>
-
-    <!-- 슬라이더 -->
-    <div class="controls">
-      <div class="ctrl">
-        <span class="ctrl-label">투자 원금</span>
-        <input type="range" min="1000000" max="100000000" step="1000000" value="10000000" id="r2-p" oninput="calcRecovery()">
-        <span class="ctrl-out g" id="o2-p">₩10,000,000</span>
-      </div>
-      <div class="ctrl">
-        <span class="ctrl-label">손실률</span>
-        <input type="range" class="red" min="1" max="80" step="1" value="20" id="r2-loss" oninput="calcRecovery()">
-        <span class="ctrl-out r" id="o2-loss">-20%</span>
-      </div>
-    </div>
-
-    <!-- 차트 -->
-    <div class="chart-section">
-      <div class="section-label">손실률별 복구 필요 수익률</div>
-      <div class="chart-wrap"><canvas id="chart2" width="660" height="260" style="display: block; box-sizing: border-box; height: 260px; width: 660px;"></canvas></div>
-    </div>
-
-    <!-- 복구 테이블 -->
-    <div class="section-label">주요 손절 타이밍 비교</div>
-    <table class="recovery-table" id="rtable">
-      <thead>
-        <tr>
-          <th>손실률</th>
-          <th>손실 후 잔액</th>
-          <th>필요 복구 수익률</th>
-          <th>연 7% 기준 복구 기간</th>
-        </tr>
-      </thead>
-      <tbody id="rtbody"><tr><td class="loss-col">-5%</td><td>₩9,500,000</td><td class="need-col">+5.3%</td><td class="time-col">0.8년</td></tr><tr><td class="loss-col">-8%</td><td>₩9,200,000</td><td class="need-col">+8.7%</td><td class="time-col">1.2년</td></tr><tr><td class="loss-col">-10%</td><td>₩9,000,000</td><td class="need-col">+11.1%</td><td class="time-col">1.6년</td></tr><tr><td class="loss-col">-15%</td><td>₩8,500,000</td><td class="need-col">+17.6%</td><td class="time-col">2.4년</td></tr><tr class="current"><td class="loss-col">-20%</td><td>₩8,000,000</td><td class="need-col">+25.0%</td><td class="time-col">3.3년</td></tr><tr><td class="loss-col">-30%</td><td>₩7,000,000</td><td class="need-col">+42.9%</td><td class="time-col">5.3년</td></tr><tr><td class="loss-col">-40%</td><td>₩6,000,000</td><td class="need-col">+66.7%</td><td class="time-col">7.6년</td></tr><tr><td class="loss-col">-50%</td><td>₩5,000,000</td><td class="need-col">+100.0%</td><td class="time-col">10.2년</td></tr></tbody>
-    </table>
-
-    <div class="insight green" id="insight-recovery"><b class="r">-20%</b> 손실 시 잔액은 <b class="r">₩8,000,000</b>입니다. 원금을 회복하려면 <b class="y">+25.0%</b>의 수익이 필요하며, 연 7% 수익률 기준으로 <b class="g">3.3년</b>이 걸립니다. <b class="g">손절은 시간을 사는 것입니다.</b></div>
-
-  </div><!-- /panel-1 -->
-
-
-  <!-- ════════════════════════════════════
-       패널 3: 손실 고통 시각화
-  ════════════════════════════════════ -->
-  <div class="panel" id="panel-2">
-
-    <div class="hero">
-      <div class="hero-tag green">논문 기반 심리 시각화</div>
-      <h1 class="hero-title">같은 금액인데<br><em class="g">이득의 기쁨</em>보다 <em>손실의 고통</em>이 크다</h1>
-      <p class="hero-desc">카너먼 &amp; 트버스키(1979) 프로스펙트 이론. 손실의 심리적 고통은 같은 금액의 이득보다 평균 2.25배 강합니다.</p>
-    </div>
-
-    <!-- 슬라이더 -->
-    <div class="controls">
-      <div class="ctrl">
-        <span class="ctrl-label">금액 설정</span>
-        <input type="range" min="100000" max="10000000" step="100000" value="1000000" id="r3-amt" oninput="calcPain()">
-        <span class="ctrl-out g" id="o3-amt">₩1,000,000</span>
-      </div>
-    </div>
-
-    <!-- 지표 카드 -->
-    <div class="cards" style="margin-bottom:1.25rem;">
-      <div class="card highlight-g">
-        <div class="card-label">이득의 기쁨</div>
-        <div class="card-value g" id="c3-gain">심리 점수 1.0</div>
-      </div>
-      <div class="card highlight">
-        <div class="card-label">손실의 고통</div>
-        <div class="card-value r" id="c3-loss">심리 점수 2.25</div>
-      </div>
-      <div class="card">
-        <div class="card-label">고통 초과분</div>
-        <div class="card-value r" id="c3-extra">+125%</div>
-      </div>
-    </div>
-
-    <!-- 고통 바 시각화 -->
-    <div class="pain-section">
-      <div class="section-label">심리적 체감 강도 비교</div>
-      <div class="pain-label">이득의 기쁨</div>
-      <div class="pain-bar-wrap">
-        <div class="pain-bar-gain" id="bar-gain" style="width: 44.4444%;">
-          <span class="bar-text" id="bar-gain-txt">기준 (×1.0)</span>
+      <div id="recordsList">
+        <div class="empty-state">
+          <div class="empty-icon">🎱</div>
+          <div class="empty-title">아직 기록이 없어요</div>
+          <div class="empty-sub">번호 추출 탭에서 생성해보세요!</div>
         </div>
       </div>
-      <div class="pain-label">손실의 고통 (× 2.25배)</div>
-      <div class="pain-bar-wrap">
-        <div class="pain-bar-loss" id="bar-loss" style="width:100%">
-          <span class="bar-text" id="bar-loss-txt">고통 (×2.25)</span>
-        </div>
-      </div>
-      <div class="pain-stat">
-        <span id="ps-gain">이득 ₩1,000,000 → 심리 점수 1.0</span>
-        <span id="ps-loss">손실 ₩1,000,000 → 심리 점수 2.25</span>
-      </div>
     </div>
 
-    <!-- 차트: 가치 함수 곡선 -->
-    <div class="chart-section">
-      <div class="section-label">프로스펙트 이론 — 가치 함수 곡선</div>
-      <div class="chart-wrap"><canvas id="chart3" width="660" height="260" style="display: block; box-sizing: border-box; height: 260px; width: 660px;"></canvas></div>
-    </div>
-
-    <div class="insight red">
-      <b class="r">왜 손절이 어려울까요?</b><br>
-      -10만원의 고통이 +10만원의 기쁨보다 2.25배 강하기 때문에, 뇌는 손실 확정을 본능적으로 거부합니다. 이건 의지의 문제가 아니라 <b class="r">진화가 만든 생존 본능</b>입니다.<br><br>
-      <b class="y">출처: Kahneman &amp; Tversky (1979). Prospect Theory: An Analysis of Decision under Risk. Econometrica, 47(2), 263–291.</b>
-    </div>
-
-  </div><!-- /panel-2 -->
-
-  <div class="footer">
-    <b>노센스</b> · 경제·투자 인사이트 유튜브 채널 · 손절의 미학
   </div>
 </div>
 
 <script>
-/* ══════════════════════════════
-   탭 전환
-══════════════════════════════ */
-function switchTab(idx){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
-  document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
-  if(idx===1) setTimeout(()=>calcRecovery(),50);
-  if(idx===2) setTimeout(()=>calcPain(),50);
+/* ══════════════════════════════════════
+   ★ 실제 동행복권 당첨번호 데이터 ★
+   업데이트 요청 시 이 부분만 수정
+   ══════════════════════════════════════ */
+const LOTTO_DATA = [
+  {no:1177,date:"2025-06-21",nums:[3,7,15,16,19,43],bonus:21},
+  {no:1178,date:"2025-06-28",nums:[5,6,11,27,43,44],bonus:17},
+  {no:1179,date:"2025-07-05",nums:[3,16,18,24,40,44],bonus:21},
+  {no:1180,date:"2025-07-12",nums:[6,12,18,37,40,41],bonus:3},
+  {no:1181,date:"2025-07-19",nums:[8,10,14,20,33,41],bonus:28},
+  {no:1182,date:"2025-07-26",nums:[1,13,21,25,28,31],bonus:22},
+  {no:1183,date:"2025-08-02",nums:[4,15,17,23,27,36],bonus:31},
+  {no:1184,date:"2025-08-09",nums:[14,16,23,25,31,37],bonus:42},
+  {no:1185,date:"2025-08-16",nums:[6,17,22,28,29,32],bonus:38},
+  {no:1186,date:"2025-08-23",nums:[2,8,13,16,23,28],bonus:35},
+  {no:1187,date:"2025-08-30",nums:[5,13,26,29,37,40],bonus:42},
+  {no:1188,date:"2025-09-06",nums:[3,4,12,19,22,27],bonus:9},
+  {no:1189,date:"2025-09-13",nums:[9,19,29,35,37,38],bonus:31},
+  {no:1190,date:"2025-09-20",nums:[7,9,19,23,26,45],bonus:33},
+  {no:1191,date:"2025-09-27",nums:[1,4,11,12,20,41],bonus:2},
+  {no:1192,date:"2025-10-04",nums:[10,16,23,36,39,40],bonus:11},
+  {no:1193,date:"2025-10-11",nums:[6,9,16,19,24,28],bonus:17},
+  {no:1194,date:"2025-10-18",nums:[3,13,15,24,33,37],bonus:2},
+  {no:1195,date:"2025-10-25",nums:[3,15,27,33,34,36],bonus:37},
+  {no:1196,date:"2025-11-01",nums:[8,12,15,29,40,45],bonus:14},
+  {no:1197,date:"2025-11-08",nums:[11,14,22,31,38,42],bonus:5},
+  {no:1198,date:"2025-11-15",nums:[26,30,33,38,39,41],bonus:21},
+  {no:1199,date:"2025-11-22",nums:[16,24,25,30,31,32],bonus:7},
+  {no:1200,date:"2025-11-29",nums:[1,2,4,16,20,32],bonus:45},
+  {no:1201,date:"2025-12-06",nums:[7,9,24,27,35,36],bonus:37},
+  {no:1202,date:"2025-12-13",nums:[5,12,21,33,37,40],bonus:7},
+  {no:1203,date:"2025-12-20",nums:[3,6,18,29,35,39],bonus:24},
+  {no:1204,date:"2025-12-27",nums:[8,16,28,30,31,44],bonus:27},
+  {no:1205,date:"2026-01-03",nums:[1,4,16,23,31,41],bonus:2},
+  {no:1206,date:"2026-01-10",nums:[1,3,17,26,27,42],bonus:23},
+  {no:1207,date:"2026-01-17",nums:[10,22,24,27,38,45],bonus:11},
+  {no:1208,date:"2026-01-24",nums:[6,27,30,36,38,42],bonus:25},
+  {no:1209,date:"2026-01-31",nums:[2,17,20,35,37,39],bonus:24},
+  {no:1210,date:"2026-02-07",nums:[1,7,9,17,27,38],bonus:31},
+  {no:1211,date:"2026-02-14",nums:[23,26,27,35,38,40],bonus:10},
+  {no:1212,date:"2026-02-21",nums:[5,8,25,31,41,44],bonus:45},
+  {no:1213,date:"2026-02-28",nums:[5,11,25,27,36,38],bonus:2},
+  {no:1214,date:"2026-03-07",nums:[10,15,19,27,30,33],bonus:14},
+  {no:1215,date:"2026-03-14",nums:[13,15,19,21,44,45],bonus:39},
+  {no:1216,date:"2026-03-21",nums:[3,10,14,15,23,24],bonus:25},
+  {no:1217,date:"2026-03-28",nums:[8,10,15,20,29,31],bonus:41},
+];
+/* ════════════════════════════════════════ */
+
+const ALGOS = [
+  {id:"combo", icon:"🤖", label:"AI 복합분석", desc:"빈도+구간+홀짝 종합"},
+  {id:"freq",  icon:"🔥", label:"빈도수 우선",  desc:"자주 나온 번호"},
+  {id:"cold",  icon:"❄️", label:"미출현 우선",  desc:"오래 안 나온 번호"},
+  {id:"balance",icon:"⚖️",label:"홀짝 균형",   desc:"홀3 + 짝3"},
+  {id:"zone",  icon:"🎯", label:"구간 분산",    desc:"전 구간 고른 분포"},
+  {id:"random",icon:"🎲", label:"순수 랜덤",    desc:"완전 무작위"},
+];
+
+let selectedAlgo = "combo";
+let selectedCount = 1;
+let myRecords = [];
+
+/* ── 볼 색상 ── */
+function ballClass(n){ return n<=10?"y":n<=20?"b":n<=30?"r":n<=40?"p":"g"; }
+function ballSize(sz){ return `width:${sz}px;height:${sz}px;font-size:${sz>44?15:sz>36?12:10}px`; }
+
+function makeBall(n, sz=44, bonus=false, dim=false, delay=0){
+  const cls = bonus ? "bonus" : ballClass(n);
+  const dimCls = dim ? " dim" : "";
+  const anim = delay>=0 && !dim ? `animation:popIn .5s cubic-bezier(.34,1.56,.64,1) ${delay}s both` : "";
+  const dot = bonus ? `<div class="bonus-dot">B</div>` : "";
+  return `<div class="ball ${cls}${dimCls}" style="${ballSize(sz)};${anim}">${n}${dot}</div>`;
 }
 
-/* ══════════════════════════════
-   패널 1: 손절가 계산기
-══════════════════════════════ */
-function fmt(n){return '₩'+Math.round(n).toLocaleString('ko-KR');}
-function fmtPct(n){return (n>=0?'+':'')+n.toFixed(1)+'%';}
-
-function calcStop(){
-  const buy = +document.getElementById('r1-buy').value;
-  const qty = +document.getElementById('r1-qty').value;
-  const pct = +document.getElementById('r1-pct').value;
-
-  document.getElementById('o1-buy').textContent = fmt(buy);
-  document.getElementById('o1-qty').textContent = qty+'주';
-  document.getElementById('o1-pct').textContent = '-'+pct.toFixed(1)+'%';
-
-  const stopPrice = buy * (1 - pct/100);
-  const totalBuy  = buy * qty;
-  const lossAmt   = (buy - stopPrice) * qty;
-  const remain    = totalBuy - lossAmt;
-
-  document.getElementById('c1-buy').textContent      = fmt(buy);
-  document.getElementById('c1-stop').textContent     = fmt(stopPrice);
-  document.getElementById('r1-total').textContent    = fmt(totalBuy);
-  document.getElementById('r1-stopprice').textContent= fmt(stopPrice);
-  document.getElementById('r1-lossamount').textContent= '-'+fmt(lossAmt);
-  document.getElementById('r1-remain').textContent   = fmt(remain);
-  document.getElementById('c1-loss').textContent     = '-'+fmt(lossAmt);
-
-  const pctLabel = pct.toFixed(1);
-  const nextNeed = (100 / (100 - pct) - 1) * 100;
-
-  document.getElementById('insight-stop').innerHTML =
-    `지금 <b class="r">-${pctLabel}%</b> 손절하면 <b class="y">${fmt(lossAmt)}</b>의 손실로 끝납니다.`+
-    ` 하지만 그냥 들고 버텨 <b class="r">-${(pct*2).toFixed(0)}%</b>가 되면 원금 복구에 <b class="r">+${(100/(100-pct*2)-1)*100 > 0 ? ((100/(100-pct*2)-1)*100).toFixed(1) : '?'}%</b>가 필요합니다.`+
-    ` 빠른 손절이 자본을 지킵니다.`;
+/* ── 통계 계산 ── */
+function calcFreq(){
+  const f={};
+  for(let i=1;i<=45;i++) f[i]=0;
+  LOTTO_DATA.forEach(r=>r.nums.forEach(n=>f[n]++));
+  return f;
 }
 
-/* ══════════════════════════════
-   패널 2: 손실 복구 계산기
-══════════════════════════════ */
-let chart2Instance = null;
+/* ── 알고리즘 ── */
+function generate(algo){
+  const all=Array.from({length:45},(_,i)=>i+1);
+  const freq=calcFreq();
+  function pickFrom(pool,count,existing=[]){
+    const res=[...existing];
+    const sh=[...pool].sort(()=>Math.random()-.5);
+    for(const n of sh){ if(!res.includes(n)){res.push(n); if(res.length===count+existing.length)break;} }
+    return res.sort((a,b)=>a-b);
+  }
+  if(algo==="freq"){
+    const top20=[...all].sort((a,b)=>freq[b]-freq[a]).slice(0,20);
+    return pickFrom(top20,6);
+  }
+  if(algo==="cold"){
+    const cold20=[...all].sort((a,b)=>freq[a]-freq[b]).slice(0,20);
+    return pickFrom(cold20,6);
+  }
+  if(algo==="balance"){
+    const odds=all.filter(n=>n%2!==0), evens=all.filter(n=>n%2===0);
+    return pickFrom(evens,3,pickFrom(odds,3));
+  }
+  if(algo==="zone"){
+    const zones=[[1,9],[10,18],[19,27],[28,36],[37,45]];
+    const chosen=zones.map(([s,e])=>{const z=all.filter(n=>n>=s&&n<=e);return z[Math.floor(Math.random()*z.length)];});
+    return pickFrom(all.filter(n=>!chosen.includes(n)),1,chosen);
+  }
+  if(algo==="combo"){
+    const sorted=[...all].sort((a,b)=>freq[b]-freq[a]);
+    const top30=sorted.slice(0,30);
+    const zones=[[1,9],[10,18],[19,27],[28,36],[37,45]];
+    const zRep=zones.map(([s,e])=>{const z=top30.filter(n=>n>=s&&n<=e);return z.length?z[0]:all.filter(n=>n>=s&&n<=e)[0];});
+    return pickFrom([...new Set([...zRep,...top30])],6);
+  }
+  return pickFrom(all,6);
+}
 
-function calcRecovery(){
-  const p    = +document.getElementById('r2-p').value;
-  const loss = +document.getElementById('r2-loss').value;
-
-  document.getElementById('o2-p').textContent    = fmt(p);
-  document.getElementById('o2-loss').textContent = '-'+loss+'%';
-
-  const after  = p * (1 - loss/100);
-  const needed = (p/after - 1) * 100;
-
-  document.getElementById('c2-principal').textContent = fmt(p);
-  document.getElementById('c2-after').textContent     = fmt(after);
-  document.getElementById('c2-need').textContent      = '+'+needed.toFixed(1)+'%';
-
-  // 복구 테이블
-  const rows = [5,8,10,15,20,30,40,50];
-  const tbody = document.getElementById('rtbody');
-  tbody.innerHTML = '';
-  rows.forEach(l => {
-    const af  = p * (1 - l/100);
-    const nd  = (p/af - 1) * 100;
-    const yrs = Math.log(p/af) / Math.log(1.07);
-    const isCurrent = l === loss;
-    const tr = document.createElement('tr');
-    if(isCurrent) tr.className='current';
-    tr.innerHTML =
-      `<td class="loss-col">-${l}%</td>`+
-      `<td>${fmt(af)}</td>`+
-      `<td class="need-col">+${nd.toFixed(1)}%</td>`+
-      `<td class="time-col">${yrs.toFixed(1)}년</td>`;
-    tbody.appendChild(tr);
+/* ── 탭 전환 ── */
+function switchTab(id, btn){
+  ["generate","stats","recent","records"].forEach(t=>{
+    document.getElementById("tab-"+t).style.display = t===id?"block":"none";
   });
-
-  // 차트
-  const lossPoints = Array.from({length:79},(_,i)=>i+1);
-  const needPoints = lossPoints.map(l => (100/(100-l)-1)*100);
-
-  if(chart2Instance) chart2Instance.destroy();
-  chart2Instance = new Chart(document.getElementById('chart2'),{
-    type:'line',
-    data:{
-      labels: lossPoints.map(l=>'-'+l+'%'),
-      datasets:[{
-        label:'필요 복구 수익률',
-        data: needPoints,
-        borderColor:'#ff4d6a',
-        backgroundColor:'rgba(255,77,106,0.08)',
-        fill:true, tension:0.2, pointRadius:0, borderWidth:2.5
-      },{
-        label:'현재 손실',
-        data: lossPoints.map(l => l===loss ? (100/(100-l)-1)*100 : null),
-        borderColor:'#ffd166',
-        backgroundColor:'#ffd166',
-        pointRadius:8, pointHoverRadius:10,
-        borderWidth:0, showLine:false,
-        pointBackgroundColor:'#ffd166'
-      }]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          backgroundColor:'#1c1c23', borderColor:'rgba(255,255,255,0.1)', borderWidth:1,
-          titleColor:'#eeeef0', bodyColor:'#999aaa',
-          callbacks:{
-            label: ctx => {
-              if(ctx.datasetIndex===0) return ' 필요 수익률: +'+ctx.parsed.y.toFixed(1)+'%';
-              return ' ← 현재 손실';
-            }
-          }
-        }
-      },
-      scales:{
-        x:{
-          ticks:{autoSkip:true,maxTicksLimit:10,font:{size:10},color:'#666672'},
-          grid:{color:'rgba(255,255,255,0.04)'},
-          border:{color:'rgba(255,255,255,0.06)'}
-        },
-        y:{
-          ticks:{callback:v=>'+'+v.toFixed(0)+'%',font:{size:10},color:'#666672'},
-          grid:{color:'rgba(255,255,255,0.04)'},
-          border:{color:'rgba(255,255,255,0.06)'}
-        }
-      }
-    }
-  });
-
-  document.getElementById('insight-recovery').innerHTML =
-    `<b class="r">-${loss}%</b> 손실 시 잔액은 <b class="r">${fmt(after)}</b>입니다.`+
-    ` 원금을 회복하려면 <b class="y">+${needed.toFixed(1)}%</b>의 수익이 필요하며,`+
-    ` 연 7% 수익률 기준으로 <b class="g">${(Math.log(p/after)/Math.log(1.07)).toFixed(1)}년</b>이 걸립니다.`+
-    ` <b class="g">손절은 시간을 사는 것입니다.</b>`;
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  if(id==="stats") renderStats();
+  if(id==="recent") renderRecent();
+  if(id==="records") renderRecords();
 }
 
-/* ══════════════════════════════
-   패널 3: 손실 고통 시각화
-══════════════════════════════ */
-let chart3Instance = null;
+/* ── 초기화 ── */
+function init(){
+  const latest = LOTTO_DATA[LOTTO_DATA.length-1];
+  document.getElementById("dataInfo").textContent =
+    `실제 동행복권 데이터 ${LOTTO_DATA.length}회 (${LOTTO_DATA[0].no}~${latest.no}회) 기반`;
 
-function calcPain(){
-  const amt = +document.getElementById('r3-amt').value;
-  document.getElementById('o3-amt').textContent = fmt(amt);
+  // 최신회차 배너
+  const banner = document.getElementById("latestBanner");
+  let ballsHtml = latest.nums.map(n=>makeBall(n,30)).join("");
+  ballsHtml += `<span style="font-size:11px;color:#475569">+</span>` + makeBall(latest.bonus,30,true);
+  banner.innerHTML = `<span class="latest-label">🏆 ${latest.no}회 (${latest.date})</span>
+    <div class="ball-row">${ballsHtml}</div>`;
 
-  const gainScore = 1.0;
-  const lossScore = 2.25;
+  // 알고리즘 그리드
+  const ag = document.getElementById("algoGrid");
+  ag.innerHTML = ALGOS.map(a=>`
+    <div class="algo-card ${a.id==="combo"?"active":""}" id="algo-${a.id}" onclick="selectAlgo('${a.id}')">
+      <div class="algo-icon">${a.icon}</div>
+      <div class="algo-name">${a.label}</div>
+      <div class="algo-desc">${a.desc}</div>
+    </div>`).join("");
 
-  document.getElementById('c3-gain').textContent  = '심리 점수 1.0';
-  document.getElementById('c3-loss').textContent  = '심리 점수 2.25';
-  document.getElementById('c3-extra').textContent = '+125%';
-
-  // 바 업데이트
-  const gainW = (1/2.25)*100;
-  document.getElementById('bar-gain').style.width = gainW+'%';
-  document.getElementById('bar-gain-txt').textContent = '기준 (×1.0)';
-  document.getElementById('bar-loss-txt').textContent = '고통 (×2.25)';
-  document.getElementById('ps-gain').textContent = '이득 '+fmt(amt)+' → 심리 점수 1.0';
-  document.getElementById('ps-loss').textContent = '손실 '+fmt(amt)+' → 심리 점수 2.25';
-
-  // 가치 함수 곡선
-  const xs = Array.from({length:200},(_,i)=>(i-100));
-  const gains = xs.filter(x=>x>=0);
-  const losses = xs.filter(x=>x<=0);
-
-  const valueGain = x => Math.pow(x,0.88);
-  const valueLoss = x => -2.25 * Math.pow(-x, 0.88);
-
-  const gainData  = gains.map(x=>({x,y:valueGain(x)}));
-  const lossData  = losses.map(x=>({x,y:valueLoss(x)}));
-
-  if(chart3Instance) chart3Instance.destroy();
-  chart3Instance = new Chart(document.getElementById('chart3'),{
-    type:'line',
-    data:{
-      datasets:[
-        {
-          label:'이득 영역 (기쁨)',
-          data: gainData,
-          borderColor:'#00e5a0',
-          backgroundColor:'rgba(0,229,160,0.07)',
-          fill:true, tension:0, pointRadius:0, borderWidth:2.5
-        },
-        {
-          label:'손실 영역 (고통)',
-          data: lossData,
-          borderColor:'#ff4d6a',
-          backgroundColor:'rgba(255,77,106,0.07)',
-          fill:true, tension:0, pointRadius:0, borderWidth:2.5
-        }
-      ]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{
-          display:true,
-          position:'top',
-          labels:{color:'#999aaa',font:{size:11},boxWidth:10,padding:14}
-        },
-        tooltip:{enabled:false},
-        annotation:{}
-      },
-      scales:{
-        x:{
-          type:'linear',
-          title:{display:true,text:'이득 / 손실 (금액)',color:'#666672',font:{size:10}},
-          ticks:{color:'#666672',font:{size:10},callback:v=>v===0?'0':v>0?'+'+v:v},
-          grid:{color:'rgba(255,255,255,0.04)'},
-          border:{color:'rgba(255,255,255,0.06)'}
-        },
-        y:{
-          title:{display:true,text:'심리적 가치',color:'#666672',font:{size:10}},
-          ticks:{color:'#666672',font:{size:10}},
-          grid:{
-            color:ctx=>ctx.tick.value===0?'rgba(255,255,255,0.15)':'rgba(255,255,255,0.04)'
-          },
-          border:{color:'rgba(255,255,255,0.06)'}
-        }
-      }
-    }
-  });
+  // 게임 수 버튼
+  const cr = document.getElementById("countRow");
+  cr.innerHTML = [1,2,3,5,10].map(n=>`
+    <button class="count-btn ${n===1?"active":""}" id="cnt-${n}" onclick="selectCount(${n})">${n}</button>`).join("");
 }
 
-/* ══════════════════════════════
-   초기화
-══════════════════════════════ */
-window.addEventListener('load',()=>{
-  calcStop();
-});
+function selectAlgo(id){
+  selectedAlgo = id;
+  document.querySelectorAll(".algo-card").forEach(c=>c.classList.remove("active"));
+  document.getElementById("algo-"+id).classList.add("active");
+}
+
+function selectCount(n){
+  selectedCount = n;
+  document.querySelectorAll(".count-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("cnt-"+n).classList.add("active");
+  document.getElementById("genBtn").textContent = `🎰 번호 추출하기 (${n}게임)`;
+}
+
+function handleGenerate(){
+  const btn = document.getElementById("genBtn");
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spin">⚙️</span> 분석 중...`;
+  setTimeout(()=>{
+    const games = Array.from({length:selectedCount},()=>generate(selectedAlgo));
+    const algoInfo = ALGOS.find(a=>a.id===selectedAlgo);
+    const labels = ["A","B","C","D","E","F","G","H","I","J"];
+    let html = `<div class="result-cards">
+      <div class="result-label">✨ 추출 결과 — ${algoInfo.icon} ${algoInfo.label}</div>`;
+    games.forEach((game,gi)=>{
+      const balls = game.map((n,i)=>makeBall(n,44,false,false,i*0.08)).join("");
+      html += `<div class="result-card" style="animation-delay:${gi*0.08}s">
+        <div class="result-sub">${labels[gi]}조</div>
+        <div class="result-balls">${balls}</div>
+      </div>`;
+    });
+    html += `</div>`;
+    document.getElementById("results").innerHTML = html;
+    btn.disabled = false;
+    btn.textContent = `🎰 번호 추출하기 (${selectedCount}게임)`;
+
+    // 기록 저장
+    games.forEach(g=>{
+      myRecords.unshift({nums:g, algo:selectedAlgo, time:new Date().toLocaleString("ko-KR")});
+    });
+    if(myRecords.length>60) myRecords=myRecords.slice(0,60);
+  }, 900);
+}
+
+/* ── 통계 렌더 ── */
+function renderStats(){
+  const freq = calcFreq();
+  const all45 = Array.from({length:45},(_,i)=>i+1);
+  const byFreq = [...all45].sort((a,b)=>freq[b]-freq[a]);
+  const top10 = byFreq.slice(0,10);
+  const cold10 = byFreq.slice(-10).reverse();
+  const maxFreq = Math.max(...Object.values(freq));
+
+  // 홀짝 패턴
+  const pm={};
+  LOTTO_DATA.forEach(r=>{
+    const o=r.nums.filter(n=>n%2!==0).length;
+    const k=`홀${o}짝${6-o}`; pm[k]=(pm[k]||0)+1;
+  });
+  const patterns=Object.entries(pm).sort((a,b)=>b[1]-a[1]);
+
+  let html = `
+    <div class="section-title">🔥 자주 나온 번호 TOP 10 (최근 ${LOTTO_DATA.length}회)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+      ${top10.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        ${makeBall(n,46,false,false,-1)}
+        <div style="font-size:10px;color:#a78bfa;font-weight:700">${freq[n]}회</div>
+        <div style="font-size:9px;color:#475569">#${i+1}</div>
+      </div>`).join("")}
+    </div>
+
+    <div class="section-title">❄️ 미출현 번호 TOP 10</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+      ${cold10.map(n=>`<div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        ${makeBall(n,46,false,true,-1)}
+        <div style="font-size:10px;color:#475569;font-weight:700">${freq[n]}회</div>
+      </div>`).join("")}
+    </div>
+
+    <div class="section-title">📊 전체 번호 빈도 히트맵</div>
+    <div class="heatmap" style="margin-bottom:24px">
+      ${all45.map(n=>{
+        const ratio=freq[n]/maxFreq;
+        const colors={"y":"#f59e0b","b":"#3b82f6","r":"#ef4444","p":"#8b5cf6","g":"#10b981"};
+        const glow=colors[ballClass(n)];
+        const alpha=Math.round(ratio*180+30).toString(16).padStart(2,"0");
+        return `<div class="heatmap-cell" style="background:${glow}${alpha};border:1px solid ${glow}33">
+          <div class="heatmap-n">${n}</div>
+          <div class="heatmap-c">${freq[n]}</div>
+        </div>`;
+      }).join("")}
+    </div>
+
+    <div class="section-title">⚖️ 홀짝 비율 분석</div>
+    ${patterns.slice(0,7).map(([k,v])=>`
+      <div class="stat-row">
+        <div style="width:66px;font-size:11px;font-weight:700;color:#e2e8f0;flex-shrink:0">${k}</div>
+        <div class="stat-bar-wrap">
+          <div class="stat-bar" style="width:${(v/LOTTO_DATA.length)*100}%;background:linear-gradient(90deg,#8b5cf6,#6366f1)">${v}회</div>
+        </div>
+        <div style="font-size:11px;color:#64748b;width:38px;text-align:right;flex-shrink:0">${((v/LOTTO_DATA.length)*100).toFixed(1)}%</div>
+      </div>`).join("")}
+
+    <div class="section-title" style="margin-top:20px">🎯 구간별 출현 횟수</div>
+    ${[{r:"1~10",c:"#f59e0b"},{r:"11~20",c:"#3b82f6"},{r:"21~30",c:"#ef4444"},{r:"31~40",c:"#8b5cf6"},{r:"41~45",c:"#10b981"}].map(({r,c})=>{
+      const [s,e]=r.split("~").map(Number);
+      const cnt=LOTTO_DATA.reduce((acc,d)=>acc+d.nums.filter(n=>n>=s&&n<=e).length,0);
+      return `<div class="stat-row">
+        <div style="width:46px;font-size:11px;font-weight:700;color:#e2e8f0;flex-shrink:0">${r}</div>
+        <div class="stat-bar-wrap">
+          <div class="stat-bar" style="width:${Math.min((cnt/(LOTTO_DATA.length*2))*100,100)}%;background:${c}">${cnt}</div>
+        </div>
+      </div>`;
+    }).join("")}
+  `;
+  document.getElementById("tab-stats").innerHTML = html;
+}
+
+/* ── 최근당첨 렌더 ── */
+function renderRecent(){
+  const latest = LOTTO_DATA[LOTTO_DATA.length-1];
+  let html = `<div class="section-title">📅 실제 당첨번호 (최근 ${LOTTO_DATA.length}회 — ${LOTTO_DATA[0].no}~${latest.no}회)</div>`;
+  [...LOTTO_DATA].reverse().forEach(d=>{
+    const isLatest = d.no===latest.no;
+    const balls = d.nums.map(n=>makeBall(n,36,false,false,-1)).join("");
+    const bonus = makeBall(d.bonus,36,true,false,-1);
+    html += `<div class="draw-card ${isLatest?"latest":""}">
+      <div class="draw-meta">
+        <span class="draw-no ${isLatest?"latest":""}">${d.no}회 ${isLatest?"🏆 최신":""}</span>
+        <span class="draw-date">${d.date}</span>
+      </div>
+      <div class="ball-row wrap">${balls}<span style="font-size:11px;color:#475569;align-self:center">+</span>${bonus}</div>
+    </div>`;
+  });
+  document.getElementById("tab-recent").innerHTML = html;
+}
+
+/* ── 내기록 렌더 ── */
+function renderRecords(){
+  document.getElementById("recTitle").textContent = `📋 내 추출 기록 (${myRecords.length}건)`;
+  if(myRecords.length===0){
+    document.getElementById("recordsList").innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🎱</div>
+        <div class="empty-title">아직 기록이 없어요</div>
+        <div class="empty-sub">번호 추출 탭에서 생성해보세요!</div>
+      </div>`;
+    return;
+  }
+  let html="";
+  myRecords.forEach((r,i)=>{
+    const algoInfo=ALGOS.find(a=>a.id===r.algo);
+    const balls=r.nums.map(n=>makeBall(n,36,false,false,-1)).join("");
+    html+=`<div class="rec-card" style="animation-delay:${Math.min(i,.5)*0.05}s">
+      <div class="rec-meta">
+        <span class="rec-algo">${algoInfo.icon} ${algoInfo.label}</span>
+        <span class="rec-time">${r.time}</span>
+      </div>
+      <div class="ball-row wrap">${balls}</div>
+    </div>`;
+  });
+  document.getElementById("recordsList").innerHTML = html;
+}
+
+function clearRecords(){
+  myRecords=[];
+  renderRecords();
+}
+
+init();
 </script>
 
 
