@@ -10,7 +10,7 @@
   body{background:#07090f;color:#e2e8f0;font-family:'Noto Sans KR',sans-serif;min-height:100vh}
   #app{max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:80px;}
 
-  /* ── 헤더 (유튜브 버튼 위치 조정) ── */
+  /* ── 헤더 (유튜브 버튼 및 문구 위치 조정) ── */
   .header{background:linear-gradient(180deg,#0d1220 0%,#07090f 100%);
     border-bottom:1px solid rgba(139,92,246,.2);padding:18px 18px 0;
     position:sticky;top:0;z-index:20}
@@ -18,7 +18,17 @@
   .app-title{font-size:20px;font-weight:900;letter-spacing:-1px;
     background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
   
-  /* ── 유튜브 이동 버튼 스타일 (이미지 디자인 반영) ── */
+  /* ── 유튜브 이동 버튼 및 문구 스타일 (디자인 반영) ── */
+  .youtube-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 문구와 아이콘 사이 간격 */
+  }
+  .youtube-text {
+    font-size: 12px;
+    color: #94a3b8; /* 기존 보조 문구 색상 */
+    font-weight: 500;
+  }
   .youtube-link {
     display: flex;
     align-items: center;
@@ -41,149 +51,4 @@
   }
 
   /* ── 이하 기존 스타일 전체 유지 ── */
-  .tabs{display:flex;border-bottom:1px solid rgba(226,232,240,.06)}
-  .tab-item{flex:1;text-align:center;padding:12px 0;font-size:14px;color:#94a3b8;cursor:pointer;position:relative}
-  .tab-item.active{color:#a78bfa;font-weight:700}
-  .tab-item.active::after{content:'';position:absolute;bottom:-1px;left:20%;right:20%;height:2px;background:#a78bfa;border-radius:2px}
-
-  .content-section{display:none;padding:18px}
-  .content-section.active{display:block}
-
-  .panel{background:#0d1220;border-radius:12px;border:1px solid rgba(226,232,240,.06);padding:18px;margin-bottom:18px}
-  .panel-title{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;color:#f1f5f9}
-  
-  .alg-btn-group{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .alg-btn{background:#111827;border:1px solid rgba(226,232,240,.06);color:#94a3b8;padding:14px;border-radius:8px;font-size:13px;cursor:pointer;text-align:left;transition:all .2s;display:flex;flex-direction:column}
-  .alg-btn:hover{border-color:rgba(167,139,250,.4);background:#161d2f}
-  .alg-btn.active{border-color:#a78bfa;background:#1e1b4b;color:#a78bfa}
-  .alg-btn-title{font-weight:700;margin-bottom:4px;font-size:14px}
-  
-  .opt-label{display:flex;align-items:center;justify-content:space-between;padding:12px 0;font-size:13px;color:#94a3b8;border-bottom:1px solid rgba(226,232,240,.06)}
-  .toggle-sw{position:relative;display:inline-block;width:38px;height:20px}
-  .toggle-sw input{opacity:0;width:0;height:0}
-  .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#1f2937;border-radius:20px;transition:.3s}
-  .toggle-slider:before{position:absolute;content:"";height:16px;width:16px;left:2px;bottom:2px;background-color:#94a3b8;border-radius:50%;transition:.3s}
-  input:checked + .toggle-slider{background-color:#7c3aed}
-  input:checked + .toggle-slider:before{transform:translateX(18px);background-color:#fff}
-  
-  .action-btn{width:100%;padding:16px;background:linear-gradient(135deg,#8b5cf6 0%,#6d28d9 100%);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:10px;box-shadow:0 4px 12px rgba(109,40,217,.3)}
-  .action-btn:hover{opacity:.9;transform:translateY(-1px)}
-  .action-btn:active{transform:translateY(1px)}
-
-  .number-list{list-style:none;margin-top:18px}
-  .number-set{background:#0d1220;border-radius:10px;padding:14px;margin-bottom:12px;border:1px solid rgba(226,232,240,.06);position:relative}
-  .set-header{font-size:12px;color:#64748b;margin-bottom:10px;display:flex;justify-content:space-between}
-  .ball-container{display:flex;gap:7px}
-  .ball{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3);box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
-  .set-type{background:rgba(167,139,250,.1);color:#a78bfa;padding:2px 6px;border-radius:4px;font-size:11px}
-  .del-btn{position:absolute;top:10px;right:10px;background:none;border:none;color:#475569;cursor:pointer;font-size:16px}
-  .del-btn:hover{color:#ef4444}
-  
-  .loading{text-align:center;padding:30px;color:#64748b;font-size:13px}
-  .empty-msg{text-align:center;padding:40px;color:#64748b;font-size:13px;line-height:1.6}
-  
-  .drw-header{font-size:13px;color:#94a3b8;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-  .drw-no{font-size:18px;font-weight:900;color:#f1f5f9;margin-right:8px}
-  
-  /* Ball Colors (기존 유지) */
-  .b-y{background:#eab308}.b-b{background:#3b82f6}.b-r{background:#ef4444}.b-g{background:#6b7280}.b-p{background:#22c55e}
-</style>
-</head>
-<body>
-<div id="app">
-  <header class="header">
-    <div class="header-top">
-      <div>
-        <h1 class="app-title">노센스 AI 로또분석기</h1>
-        <p style="font-size:11px;color:#64748b;margin-top:2px">구독자 평생 무료 서비스</p>
-      </div>
-      <a href="https://www.youtube.com/@KnowSense_KR" target="_blank" class="youtube-link">
-        <svg class="youtube-icon-svg" viewBox="0 0 24 24">
-          <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816-.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 4-8 4z"/>
-        </svg>
-      </a>
-    </div>
-    
-    <div class="tabs">
-      <div class="tab-item active" onclick="switchTab(0)">번호 추출</div>
-      <div class="tab-item" onclick="switchTab(1)">내 기록</div>
-      <div class="tab-item" onclick="switchTab(2)">최근 당첨</div>
-    </div>
-  </header>
-
-  <main class="content-section active" id="tab0">
-    <div class="panel">
-      <h2 class="panel-title">분석 알고리즘 선택</h2>
-      <div class="alg-btn-group">
-        <div class="alg-btn active" onclick="setAlg(1, this)" id="btn_alg1">
-          <span class="alg-btn-title">AI 가중치 분석</span>
-          <p>출현 통계 기반 랜덤 추출</p>
-        </div>
-        <div class="alg-btn" onclick="setAlg(2, this)" id="btn_alg2">
-          <span class="alg-btn-title">미출현 번호 기반</span>
-          <p>최근 5주 미출현 번호 활용</p>
-        </div>
-        <div class="alg-btn" onclick="setAlg(3, this)" id="btn_alg3">
-          <span class="alg-btn-title">노센스 특제 분석</span>
-          <p>이월/직전차수 제외 등 복합</p>
-        </div>
-        <div class="alg-btn" onclick="setAlg(0, this)" id="btn_alg0">
-          <span class="alg-btn-title">순수 랜덤 추출</span>
-          <p>모든 번호 동일 확률</p>
-        </div>
-      </div>
-    </div>
-    
-    <div class="panel">
-      <h2 class="panel-title">추출 옵션</h2>
-      <div class="opt-label">
-        지난 주 당첨번호 포함
-        <label class="toggle-sw"><input type="checkbox" id="opt_inc_prev" checked><span class="toggle-slider"></span></label>
-      </div>
-      <div class="opt-label">
-        추출 번호 저장 (내 기록)
-        <label class="toggle-sw"><input type="checkbox" id="opt_save" checked><span class="toggle-slider"></span></label>
-      </div>
-      <button class="action-btn" onclick="generateAndShow()">로또 번호 생성하기</button>
-    </div>
-    
-    <ul class="number-list" id="current_numbers"></ul>
-  </main>
-
-  <main class="content-section" id="tab1">
-    <div class="drw-header">
-      <span style="font-weight:700">저장된 내 추출 번호</span>
-      <button onclick="clearRecords()" style="background:none;border:none;color:#94a3b8;font-size:12px;text-decoration:underline;cursor:pointer">전체 삭제</button>
-    </div>
-    <ul class="number-list" id="saved_numbers"></ul>
-  </main>
-
-  <main class="content-section" id="tab2">
-    <div id="latest_drw_area"></div>
-    <div style="margin-top:18px">
-      <p style="font-size:12px;color:#64748b;line-height:1.6">※ 동행복권 공식 데이터를 기반으로 제공합니다.<br>※ 매주 토요일 오후 8시 45분경 추첨 후 업데이트됩니다.</p>
-    </div>
-  </main>
-
-</div>
-
-<script>
-  let db_drws=[];let my_records=[];let cur_alg=1;let inc_prev=1;
-  const TABS=document.querySelectorAll('.content-section'), TAB_ITEMS=document.querySelectorAll('.tab-item'), LIST_CUR=document.getElementById('current_numbers'), LIST_SAV=document.getElementById('saved_numbers'), EL_LATEST=document.getElementById('latest_drw_area');
-
-  function getBallColorClass(n){if(n<=10)return'b-y';if(n<=20)return'b-b';if(n<=30)return'b-r';if(n<=40)return'b-g';return'b-p'}
-  function renderBalls(balls){let h='';balls.forEach(n=>h+=`<span class="ball ${getBallColorClass(n)}">${n}</span>`);return `<div class="ball-container">${h}</div>`}
-
-  function switchTab(idx){TAB_ITEMS.forEach(t=>t.classList.remove('active'));TABS.forEach(c=>c.classList.remove('active'));TAB_ITEMS[idx].classList.add('active');TABS[idx].classList.add('active');if(idx===1)renderMyRecords();if(idx===2)renderLatestDrw()}
-  function setAlg(alg,el){document.querySelectorAll('.alg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');cur_alg=alg}
-  function generateAndShow(){LIST_CUR.innerHTML='<div class="loading">분석 중...잠시만 기다려주세요</div>';let alg_name=['랜덤','AI 가중치','미출현 기반','노센스 특제'][cur_alg];let balls=generateBalls();LIST_CUR.innerHTML=`<li class="number-set animated fadeIn"><div class="set-header"><span class="set-type">${alg_name} 분석</span><span>${new Date().toLocaleString()}</span></div>${renderBalls(balls)}</li>`}
-  function generateBalls(){let set=new Set();while(set.size<6)set.add(Math.floor(Math.random()*45)+1);return Array.from(set).sort((a,b)=>a-b)}
-
-  function renderMyRecords(){LIST_SAV.innerHTML='<div class="loading">기록 불러오는 중...</div>';setTimeout(()=>LIST_SAV.innerHTML='<div class="empty-msg">아직 저장된 기록이 없습니다.<br>번호 추출 탭에서 번호를 생성해보세요.</div>',500)}
-  function renderLatestDrw(){EL_LATEST.innerHTML='<div class="loading">최신 정보 불러오는 중...</div>';setTimeout(()=>EL_LATEST.innerHTML=`<div class="panel"><div class="drw-header"><div><span class="drw-no">1113회</span><span style="color:#64748b">(2024-03-30 추첨)</span></div></div>${renderBalls([11,13,20,21,32,44])}</div>`,500)}
-  function clearRecords(){if(confirm('모든 기록을 삭제하시겠습니까?'))alert('기록이 삭제되었습니다.')}
-
-  switchTab(0);
-</script>
-</body>
-</html>
+  .tabs{
